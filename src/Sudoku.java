@@ -56,7 +56,54 @@ public class Sudoku {
         }
         return true;
     }
-    public boolean equal(Sudoku sudoku) {
+    public boolean CanOperate(int OperateCode) {
+        if (OperateCode == 0) {
+            if (SpaceCurr < 3) {
+                return false;
+            }
+        }
+        if (OperateCode == 1) {
+            if (SpaceCurr > 5) {
+                return false;
+            }
+        }
+        if (OperateCode == 2) {
+            if (SpaceCurr == 0 || SpaceCurr == 3 || SpaceCurr == 6) {
+                return false;
+            }
+        }
+        if (OperateCode == 3) {
+            if (SpaceCurr == 2 || SpaceCurr == 5 || SpaceCurr == 8) {
+                return false;
+            }
+        }
+        return true;
+    }
+    public Sudoku Operate(int OperateCode) {
+        Sudoku ans = new Sudoku(this.elements);
+        if (OperateCode == 0) {
+            ans.elements[ans.SpaceCurr] = ans.elements[ans.SpaceCurr - 3];
+            ans.SpaceCurr -= 3;
+            ans.elements[ans.SpaceCurr] = 0;
+        }
+        if (OperateCode == 1) {
+            ans.elements[ans.SpaceCurr] = ans.elements[ans.SpaceCurr + 3];
+            ans.SpaceCurr += 3;
+            ans.elements[ans.SpaceCurr] = 0;
+        }
+        if (OperateCode == 2) {
+            ans.elements[ans.SpaceCurr] = ans.elements[ans.SpaceCurr - 1];
+            ans.SpaceCurr--;
+            ans.elements[ans.SpaceCurr] = 0;
+        }
+        if (OperateCode == 3) {
+            ans.elements[ans.SpaceCurr] = ans.elements[ans.SpaceCurr + 1];
+            ans.SpaceCurr++;
+            ans.elements[ans.SpaceCurr] = 0;
+        }
+        return ans;
+    }
+    public boolean equals(Sudoku sudoku) {
         return Arrays.equals(this.elements, sudoku.elements);
     }
 
