@@ -1,0 +1,17 @@
+static Node Open FIFO 循环队列
+static Node Close FIFO
+Root -> Open
+Node Find() {
+isOpenEmpty()
+    return -1
+Open -> Close
+->Hashset
+是否目标
+是 return Node
+否
+    for i 1 to 4
+    操作可行 && Hashset 内无
+        new Node = Node.up,Node as father
+        Node -> Open
+    return find()
+}
