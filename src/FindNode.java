@@ -1,10 +1,11 @@
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.*;
-import java.math.*;
 public class FindNode {
     Sudoku content;
     FindNode father;
+    FindNode child;
+    String Operate;
     static Queue<FindNode> Open = new LinkedList<>();
     static Queue<FindNode> Close = new LinkedList<>();
     static HashSet<FindNode> hashSet = new HashSet<>();
@@ -13,10 +14,14 @@ public class FindNode {
     public FindNode(Sudoku aContent) {
         content = new Sudoku(aContent.elements);
         father = null;
+        child = null;
+        Operate = "";
     }
     public FindNode(Sudoku aContent, FindNode aNode) {
         content = new Sudoku(aContent.elements);
         father = aNode;
+        child = null;
+        Operate = "";
     }
     public static FindNode Find() throws Exception {
         while (true) {
@@ -33,13 +38,31 @@ public class FindNode {
                     if (test.content.CanOperate(i) &&
                             !hashSet.contains(new FindNode(test.content.Operate(i)))) {
                         FindNode newNode = new FindNode(test.content.Operate(i), test);
+                        if (i == 0) {
+                            newNode.Operate += "Up";
+                        }
+                        if (i == 1) {
+                            newNode.Operate += "Down";
+                        }
+                        if (i == 2) {
+                            newNode.Operate += "Left";
+                        }
+                        if (i == 3) {
+                            newNode.Operate += "Right";
+                        }
                         Open.add(newNode);
                         hashSet.add(newNode);
                     }
                 }
             }
         }
-
+    }
+    public static FindNode BackTrack(FindNode leaf) {
+        while (leaf.father != null) {
+            leaf.father.child = leaf;
+            leaf = leaf.father;
+        }
+        return leaf;
     }
 
     @Override
@@ -68,12 +91,21 @@ public class FindNode {
 
     public static void main(String[] args) {
         FindNode RootNode = new FindNode(new Sudoku(new int[]{
-                1, 2, 3, 8, 0, 4, 7 ,5, 6}));
+                2, 6, 3,
+                1, 0, 4,
+                8, 7, 5
+        }));
         Open.add(RootNode);
         //Find();
         //System.out.println(Find().content);
         try {
-            System.out.println(Find().content);
+            FindNode ans = BackTrack(Find());
+            while (ans.child != null) {
+                System.out.println(ans.content);
+                System.out.println(ans.child.Operate);
+                ans = ans.child;
+            }
+            System.out.println(ans.content);
         }catch(Exception e){
             System.out.println(e);
         }
